@@ -11,17 +11,20 @@
 using namespace std;
 
 // Inisiasi Variabel
-string inp[4];
+string user[4], inp[4];
 float inpNum[4];
 int inpInteger[4];
 char op[4] = {'+', '-', '*', '/'};
 char op1, op2, op3, op4;
-bool valInput = false;
+bool validInput = false, validSistem = false;
 int count = 0;
 float calResult;
 vector<string> result;
+vector<string> temp;
+vector<vector<string>> permInput;
 clock_t start;
 double duration;
+int inKartu;
 
 // Fungsi kalkulasi
 float calculate(float input1, float input2, char op)
@@ -92,100 +95,255 @@ float calculateF(float input[4], char op1, char op2, char op3)
     return res;
 }
 
+// Pengecekan apakah permutasi berulang
+bool isThereVector(vector<string> temp, vector<vector<string>> permInput)
+{
+    bool tempFound = true, found = false;
+    int i = 0;
+    while (i < permInput.size() and !found)
+    {
+        int j = 0;
+        while (j < 4 and tempFound)
+        {
+            // cout << i << "-" << j << " : " << permInput[i][j] << " " << temp[j] << "\n";
+            if (permInput[i][j] == temp[j])
+            {
+                if (j == 3)
+                {
+                    found = true;
+                }
+                j++;
+            }
+            else
+                tempFound = false;
+        }
+        i++;
+    }
+    return found;
+}
+
 // Program Utama
 int main()
 {
-    cin >> inp[0] >> inp[1] >> inp[2] >> inp[3];
-
-    // Validasi Input
-    /*
-    while (!valInput)
+    cout << "*** SELAMAT DATANG DI PERMAINAN 24 ***\n";
+    cout << "Pilih sistem pemilihan kartu:\n    (1) Input nilai kartu sendiri\n    (2) Pilih kartu secara acak\nInput number : ";
+    while (!validSistem)
     {
-        valInput = true;
-        cin >> inp[0];
-        cout << "input 1 " << inp[0];
-        cin >> inp[1];
-        cout << "input 1 " << inp[1];
-        cin >> inp[2];
-        cout << "input 1 " << inp[2];
-        cin >> inp[3];
-        cout << "input 1 " << inp[3];
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (inp[i] != "A" or inp[i] != "2" or inp[i] != "3" or inp[i] != "4" or inp[i] != "5" or inp[i] != "6" or inp[i] != "7" or inp[i] != "8" or inp[i] != "9" or inp[i] != "10" or inp[i] != "J" or inp[i] != "Q" or inp[i] != "K")
-            {
-                valInput = false;
-                break;
-            }
-        }
-    }
-    */
-
-    // Mengubah input jadi angka
-    for (int i = 0; i < 4; i++)
-    {
-        if (inp[i] == "10")
-            inpNum[i] = 10;
+        cin >> inKartu;
+        if (inKartu == 1 or inKartu == 2)
+            validSistem = true;
         else
+            cout << "Masukkanmu salah! Ulangi pilih 1 atau 2\nInput number : ";
+    }
+
+    if (inKartu == 2)
+    {
+        string number[13] = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+        cout << "Kartu :";
+        for (int i = 0; i < 4; i++){
+            user[i] = number[rand() % 13];
+            cout << " " << user[i];
+        }
+        cout << "\n";
+    }
+    else
+    {
+        cout << "Masukkan 4 nilai kartu ! \nInput Kartu : ";
+
+        // Validasi Input
+        while (!validInput)
         {
-            switch (inp[i][0])
+            cin >> user[0] >> user[1] >> user[2] >> user[3];
+
+            validInput = true;
+            int i = 0;
+            while (i < 4 and validInput)
             {
-            case 'A':
-                inpNum[i] = 1;
-                break;
-            case 'J':
-                inpNum[i] = 11;
-                break;
-            case 'Q':
-                inpNum[i] = 12;
-                break;
-            case 'K':
-                inpNum[i] = 13;
-                break;
-            default:
-                inpNum[i] = inp[i][0] - '0';
+                if (user[i] == "A" or user[i] == "2" or user[i] == "3" or user[i] == "4" or user[i] == "5" or user[i] == "6" or user[i] == "7" or user[i] == "8" or user[i] == "9" or user[i] == "10" or user[i] == "J" or user[i] == "Q" or user[i] == "K")
+                {
+                    i++;
+                }
+                else
+                {
+                    cout << i << " " << user[i] << "\n";
+                    validInput = false;
+                }
             }
+
+            if (!validInput)
+                cout << "Masukkan salah! Coba Ulangi! \nInput Kartu : ";
         }
     }
 
-    for (int i = 0; i < 4; i++)
-    {
-        inpInteger[i] = static_cast<int>(inpNum[i]);
-    }
-    // Kemungkinan susunan penggunaan kurung:
-    /*
-    1. Tanpa tanda kurung
-    2. 1 Kurung 2 input
-        (A o B) o C o D
-        A o (B o C) o D
-        A o B o (C o D)
-    3. 1 Kurung 3 Input
-        (A o B o C) o D
-        A o (B o C o D)
-    4. 2 Kurung/2 input
-        (A o B) o (C  o D)
-    5. Nested
-        ((A o B) o C) o D
-        (A o (B o C)) o D
-        A o ((B o C) o D)
-        A o (B o (C o D))
-    */
-
-    start = clock();
-    // Kemungkinan 1
-    cout << "Kemungkinan 1 \n";
+    // Permutasi Input
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            for (int k = 0; k < 4; k++)
+            if (i != j)
             {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                if (op1 == '*' or op1 == '/')
+                for (int k = 0; k < 4; k++)
                 {
+                    if (k != i and k != j)
+                    {
+                        temp.push_back(user[i]);
+                        temp.push_back(user[j]);
+                        temp.push_back(user[k]);
+                        temp.push_back(user[6 - i - j - k]);
+                        if (permInput.empty())
+                            permInput.push_back(temp);
+                        else if (!isThereVector(temp, permInput))
+                            permInput.push_back(temp);
+                        while (!temp.empty())
+                            temp.pop_back();
+                    }
+                }
+            }
+        }
+    }
+
+    for (int l = 0; l < permInput.size(); l++)
+    {
+        for (int m = 0; m < 4; m++)
+        {
+            inp[m] = permInput[l][m];
+        }
+
+        // Mengubah input jadi angka
+        for (int i = 0; i < 4; i++)
+        {
+            if (inp[i] == "10")
+                inpNum[i] = 10;
+            else
+            {
+                switch (inp[i][0])
+                {
+                case 'A':
+                    inpNum[i] = 1;
+                    break;
+                case 'J':
+                    inpNum[i] = 11;
+                    break;
+                case 'Q':
+                    inpNum[i] = 12;
+                    break;
+                case 'K':
+                    inpNum[i] = 13;
+                    break;
+                default:
+                    inpNum[i] = inp[i][0] - '0';
+                }
+            }
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            inpInteger[i] = static_cast<int>(inpNum[i]);
+        }
+
+        // Kemungkinan susunan penggunaan kurung:
+        /*
+        1. Tanpa tanda kurung
+        2. 1 Kurung 2 input
+            (A o B) o C o D
+            A o (B o C) o D
+            A o B o (C o D)
+        3. 1 Kurung 3 Input
+            (A o B o C) o D
+            A o (B o C o D)
+        4. 2 Kurung/2 input
+            (A o B) o (C  o D)
+        5. Nested
+            ((A o B) o C) o D
+            (A o (B o C)) o D
+            A o ((B o C) o D)
+            A o (B o (C o D))
+        */
+
+        start = clock();
+        // Kemungkinan 1
+        // cout << "Kemungkinan 1 \n";
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    if (op1 == '*' or op1 == '/')
+                    {
+                        if (op2 == '*' or op2 == '/')
+                        {
+                            calResult = calculateA(inpNum, op1, op2, op3);
+                            // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                        }
+                        else
+                        {
+                            if (op3 == '*' or op3 == '/')
+                            {
+                                calResult = calculateB(inpNum, op1, op2, op3);
+                                // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                            }
+                            else
+                            {
+                                calResult = calculateA(inpNum, op1, op2, op3);
+                                // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (op2 == '*' or op2 == '/')
+                        {
+                            if (op3 == '*' or op3 == '/')
+                            {
+                                calResult = calculateD(inpNum, op1, op2, op3);
+                                // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                            }
+                            else
+                            {
+                                calResult = calculateC(inpNum, op1, op2, op3);
+                                // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                            }
+                        }
+                        else
+                        {
+                            if (op3 == '*' or op3 == '/')
+                            {
+                                calResult = calculateE(inpNum, op1, op2, op3);
+                                // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                            }
+                            else
+                            {
+                                calResult = calculateA(inpNum, op1, op2, op3);
+                                // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                            }
+                        }
+                    }
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back(to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]));
+                    }
+                }
+            }
+        }
+
+        // Kemungkinan 2
+        // (A o B) o C o D
+        // cout << "Kemungkinan 2a \n";
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
                     if (op2 == '*' or op2 == '/')
                     {
                         calResult = calculateA(inpNum, op1, op2, op3);
@@ -199,15 +357,36 @@ int main()
                             // cout << op1 << op2 << op3 << " " << calResult << "\n";
                         }
                         else
-                        {
                             calResult = calculateA(inpNum, op1, op2, op3);
-                            // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                        }
+                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                    }
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]));
                     }
                 }
-                else
+            }
+        }
+
+        // A o (B o C) o D
+        // cout << "Kemungkinan 2b \n";
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
                 {
-                    if (op2 == '*' or op2 == '/')
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    if (op1 == '*' or op1 == '/')
+                    {
+                        calResult = calculateC(inpNum, op1, op2, op3);
+                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                    }
+                    else
                     {
                         if (op3 == '*' or op3 == '/')
                         {
@@ -215,16 +394,78 @@ int main()
                             // cout << op1 << op2 << op3 << " " << calResult << "\n";
                         }
                         else
-                        {
                             calResult = calculateC(inpNum, op1, op2, op3);
-                            // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                        }
+                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                    }
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]));
+                    }
+                }
+            }
+        }
+
+        // A o B o (C o D)
+        // cout << "Kemungkinan 2c \n";
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    if (op1 == '*' or op1 == '/')
+                    {
+                        calResult = calculateE(inpNum, op1, op2, op3);
+                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
                     }
                     else
                     {
                         if (op3 == '*' or op3 == '/')
                         {
+                            calResult = calculateF(inpNum, op1, op2, op3);
+                            // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                        }
+                        else
                             calResult = calculateE(inpNum, op1, op2, op3);
+                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                    }
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back(to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
+                    }
+                }
+            }
+        }
+
+        // Kemungkinan 3
+        // (A o B o C) o D
+        // cout << "Kemungkinan 3a \n";
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    if (op1 == '*' or op1 == '/')
+                    {
+                        calResult = calculateA(inpNum, op1, op2, op3);
+                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                    }
+                    else
+                    {
+                        if (op2 == '*' or op2 == '/')
+                        {
+                            calResult = calculateC(inpNum, op1, op2, op3);
                             // cout << op1 << op2 << op3 << " " << calResult << "\n";
                         }
                         else
@@ -233,320 +474,168 @@ int main()
                             // cout << op1 << op2 << op3 << " " << calResult << "\n";
                         }
                     }
-                }
 
-                if (calResult == 24)
-                {
-                    count++;
-                    result.push_back(to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]));
-                }
-            }
-        }
-    }
-
-    // Kemungkinan 2
-    // (A o B) o C o D
-    cout << "Kemungkinan 2a \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                if (op2 == '*' or op2 == '/')
-                {
-                    calResult = calculateA(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-                else
-                {
-                    if (op3 == '*' or op3 == '/')
+                    if (calResult == 24)
                     {
-                        calResult = calculateB(inpNum, op1, op2, op3);
-                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                        count++;
+                        result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]));
                     }
-                    else
-                        calResult = calculateA(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-
-                if (calResult == 24)
-                {
-                    count++;
-                    result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]));
                 }
             }
         }
-    }
 
-    // A o (B o C) o D
-    cout << "Kemungkinan 2b \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
+        // A o (B o C o D)
+        // cout << "Kemungkinan 3b \n";
+        for (int i = 0; i < 4; i++)
         {
-            for (int k = 0; k < 4; k++)
+            for (int j = 0; j < 4; j++)
             {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                if (op1 == '*' or op1 == '/')
+                for (int k = 0; k < 4; k++)
                 {
-                    calResult = calculateC(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-                else
-                {
-                    if (op3 == '*' or op3 == '/')
-                    {
-                        calResult = calculateD(inpNum, op1, op2, op3);
-                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                    }
-                    else
-                        calResult = calculateC(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-
-                if (calResult == 24)
-                {
-                    count++;
-                    result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpNum[3]));
-                }
-            }
-        }
-    }
-
-    // A o B o (C o D)
-    cout << "Kemungkinan 2c \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                if (op1 == '*' or op1 == '/')
-                {
-                    calResult = calculateE(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-                else
-                {
-                    if (op3 == '*' or op3 == '/')
-                    {
-                        calResult = calculateF(inpNum, op1, op2, op3);
-                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                    }
-                    else
-                        calResult = calculateE(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-
-                if (calResult == 24)
-                {
-                    count++;
-                    result.push_back(to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
-                }
-            }
-        }
-    }
-
-    // Kemungkinan 3
-    // (A o B o C) o D
-    cout << "Kemungkinan 3a \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                if (op1 == '*' or op1 == '/')
-                {
-                    calResult = calculateA(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-                else
-                {
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
                     if (op2 == '*' or op2 == '/')
                     {
-                        calResult = calculateC(inpNum, op1, op2, op3);
-                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                    }
-                    else
-                    {
-                        calResult = calculateA(inpNum, op1, op2, op3);
-                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                    }
-                }
-
-                if (calResult == 24)
-                {
-                    count++;
-                    result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]));
-                }
-            }
-        }
-    }
-
-    // A o (B o C o D)
-    cout << "Kemungkinan 3b \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                if (op2 == '*' or op2 == '/')
-                {
-                    calResult = calculateD(inpNum, op1, op2, op3);
-                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                }
-                else
-                {
-                    if (op3 == '*' or op3 == '/')
-                    {
-                        calResult = calculateF(inpNum, op1, op2, op3);
-                        // cout << op1 << op2 << op3 << " " << calResult << "\n";
-                    }
-                    else
-                    {
                         calResult = calculateD(inpNum, op1, op2, op3);
                         // cout << op1 << op2 << op3 << " " << calResult << "\n";
                     }
-                }
+                    else
+                    {
+                        if (op3 == '*' or op3 == '/')
+                        {
+                            calResult = calculateF(inpNum, op1, op2, op3);
+                            // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                        }
+                        else
+                        {
+                            calResult = calculateD(inpNum, op1, op2, op3);
+                            // cout << op1 << op2 << op3 << " " << calResult << "\n";
+                        }
+                    }
 
-                if (calResult == 24)
-                {
-                    count++;
-                    result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
-                }
-            }
-        }
-    }
-
-    // Kemungkinan 4
-    // (A o B) o (C  o D)
-    cout << "Kemungkinan 4 \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
-        {
-            for (int k = 0; k < 4; k++)
-            {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                calResult = calculateB(inpNum, op1, op2, op3);
-                // cout << op1 << op2 << op3 << " " << calResult << "\n";
-
-                if (calResult == 24)
-                {
-                    count++;
-                    result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
+                    }
                 }
             }
         }
-    }
 
-    // Kemungkinan 5
-    // ((A o B) o C) o D
-    cout << "Kemungkinan 5a \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
+        // Kemungkinan 4
+        // (A o B) o (C  o D)
+        // cout << "Kemungkinan 4 \n";
+        for (int i = 0; i < 4; i++)
         {
-            for (int k = 0; k < 4; k++)
+            for (int j = 0; j < 4; j++)
             {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                calResult = calculateA(inpNum, op1, op2, op3);
-                // cout << op1 << op2 << op3 << " " << calResult << "\n";
-
-                if (calResult == 24)
+                for (int k = 0; k < 4; k++)
                 {
-                    count++;
-                    result.push_back("((" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]));
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    calResult = calculateB(inpNum, op1, op2, op3);
+                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
+                    }
                 }
             }
         }
-    }
 
-    // (A o (B o C)) o D
-    cout << "Kemungkinan 5b \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
+        // Kemungkinan 5
+        // ((A o B) o C) o D
+        // cout << "Kemungkinan 5a \n";
+        for (int i = 0; i < 4; i++)
         {
-            for (int k = 0; k < 4; k++)
+            for (int j = 0; j < 4; j++)
             {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                calResult = calculateC(inpNum, op1, op2, op3);
-                // cout << op1 << op2 << op3 << " " << calResult << "\n";
-
-                if (calResult == 24)
+                for (int k = 0; k < 4; k++)
                 {
-                    count++;
-                    result.push_back("(" + to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + "))" + op3 + to_string(inpInteger[3]));
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    calResult = calculateA(inpNum, op1, op2, op3);
+                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back("((" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]));
+                    }
                 }
             }
         }
-    }
 
-    // A o ((B o C) o D)
-    cout << "Kemungkinan 5c \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
+        // (A o (B o C)) o D
+        // cout << "Kemungkinan 5b \n";
+        for (int i = 0; i < 4; i++)
         {
-            for (int k = 0; k < 4; k++)
+            for (int j = 0; j < 4; j++)
             {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                calResult = calculateD(inpNum, op1, op2, op3);
-                // cout << op1 << op2 << op3 << " " << calResult << "\n";
-
-                if (calResult == 24)
+                for (int k = 0; k < 4; k++)
                 {
-                    count++;
-                    result.push_back(to_string(inpInteger[0]) + op1 + "((" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]) + ")");
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    calResult = calculateC(inpNum, op1, op2, op3);
+                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back("(" + to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + "))" + op3 + to_string(inpInteger[3]));
+                    }
                 }
             }
         }
-    }
 
-    // A o (B o (C o D))
-    cout << "Kemungkinan 5d \n";
-    for (int i = 0; i < 4; i++)
-    {
-        for (int j = 0; j < 4; j++)
+        // A o ((B o C) o D)
+        // cout << "Kemungkinan 5c \n";
+        for (int i = 0; i < 4; i++)
         {
-            for (int k = 0; k < 4; k++)
+            for (int j = 0; j < 4; j++)
             {
-                op1 = op[i];
-                op2 = op[j];
-                op3 = op[k];
-                calResult = calculateF(inpNum, op1, op2, op3);
-                // cout << op1 << op2 << op3 << " " << calResult << "\n";
-
-                if (calResult == 24)
+                for (int k = 0; k < 4; k++)
                 {
-                    count++;
-                    result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + "))");
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    calResult = calculateD(inpNum, op1, op2, op3);
+                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back(to_string(inpInteger[0]) + op1 + "((" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]) + ")");
+                    }
+                }
+            }
+        }
+
+        // A o (B o (C o D))
+        // cout << "Kemungkinan 5d \n";
+        for (int i = 0; i < 4; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < 4; k++)
+                {
+                    op1 = op[i];
+                    op2 = op[j];
+                    op3 = op[k];
+                    calResult = calculateF(inpNum, op1, op2, op3);
+                    // cout << op1 << op2 << op3 << " " << calResult << "\n";
+
+                    if (calResult == 24)
+                    {
+                        count++;
+                        result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + "))");
+                    }
                 }
             }
         }
