@@ -25,6 +25,7 @@ vector<vector<string>> permInput;
 clock_t start;
 double duration;
 int inKartu;
+char inputPil;
 
 // Fungsi kalkulasi
 float calculate(float input1, float input2, char op)
@@ -126,21 +127,22 @@ bool isThereVector(vector<string> temp, vector<vector<string>> permInput)
 int main()
 {
     cout << "*** SELAMAT DATANG DI PERMAINAN 24 ***\n";
-    cout << "Pilih sistem pemilihan kartu:\n    (1) Input nilai kartu sendiri\n    (2) Pilih kartu secara acak\nInput number : ";
+    cout << "Pilih sistem pemilihan kartu:\n    (1) Input nilai kartu sendiri\n    (2) Pilih kartu secara acak\nInput answer : ";
     while (!validSistem)
     {
         cin >> inKartu;
         if (inKartu == 1 or inKartu == 2)
             validSistem = true;
         else
-            cout << "Masukkanmu salah! Ulangi pilih 1 atau 2\nInput number : ";
+            cout << "\nMasukkan salah! Coba Ulangi (1/2)\nInput answer : ";
     }
 
     if (inKartu == 2)
     {
-        string number[13] = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
+        string number[13] = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
         cout << "Kartu :";
-        for (int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++)
+        {
             user[i] = number[rand() % 13];
             cout << " " << user[i];
         }
@@ -148,7 +150,7 @@ int main()
     }
     else
     {
-        cout << "Masukkan 4 nilai kartu ! \nInput Kartu : ";
+        cout << "\nMasukkan 4 nilai kartu ! (K/Q/J/A/2-10) \nInput Kartu : ";
 
         // Validasi Input
         while (!validInput)
@@ -165,13 +167,12 @@ int main()
                 }
                 else
                 {
-                    cout << i << " " << user[i] << "\n";
                     validInput = false;
                 }
             }
 
             if (!validInput)
-                cout << "Masukkan salah! Coba Ulangi! \nInput Kartu : ";
+                cout << "\nMasukkan salah! Coba Ulangi! (K/Q/J/A/2-10) \nInput Kartu : ";
         }
     }
 
@@ -645,7 +646,8 @@ int main()
     // Tampilkan hasil
     if (count != 0)
     {
-        cout << count << " Solution Found!\n";
+        cout << "\n"
+             << count << " Solution Found!\n";
         for (auto i = result.begin(); i != result.end(); ++i)
         {
             cout << *i << "\n";
@@ -653,9 +655,47 @@ int main()
     }
     else
     {
-        cout << "No solution found";
+        cout << "No solution found\n";
     }
     cout << "Execution time : " << duration << " seconds.\n";
+
+    // Simpan Hasil
+    validInput = false;
+    cout << "\nApakah Anda ingin menyimpan hasil ? (Y/N)\nInput answer : ";
+    while (!validInput)
+    {
+        cin >> inputPil;
+        if (inputPil == 'Y')
+        {
+            validInput = true;
+            ofstream file;
+            file.open("../test/result.txt");
+            file << "Kartu : " << user[0] << " " << user[1] << " " << user[2] << " " << user[3] << "\n";
+            if (count != 0)
+            {
+                file << count << " Solution Found!\n";
+                for (auto i = result.begin(); i != result.end(); ++i)
+                {
+                    file << *i << "\n";
+                }
+            }
+            else
+            {
+                file << "No solution found\n";
+            }
+            file << "Execution time : " << duration << " seconds.\n";
+            file.close();
+            cout << "Berhasil menyimpan solusi di '../test/result.txt' \n";
+        }
+        else if (inputPil == 'N')
+            validInput = true;
+        else
+        {
+            cout << "\nMasukkan salah! Coba Ulangi (Y/N)\nInput answer : ";
+        }
+    }
+
+    cout << "\nPermainan berakhir. Terimakasih :) \n";
     return 0;
 }
 
