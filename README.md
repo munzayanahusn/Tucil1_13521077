@@ -50,6 +50,14 @@ bernilai 11, Queen bernilai 12, King bernilai 13, sedangkan kartu bilangan memil
 - [x] Menampilkan waktu eksekusi program
 - [x] Menyimpan solusi dalam file .txt
 
+| No | Poin                                        | Ya    | Tidak |
+|:--:|:-------------------------------------------:|:-----:|:-----:|
+| 1  |	Program berhasil dikompilasi tanpa kesalahan	| :heavy_check_mark:  |       |	
+| 2  |	Program berhasil running                     | :heavy_check_mark: |       |	
+| 3  |	Program dapat membaca input / generate sendiri dan memberikan luaran	| :heavy_check_mark: |  |	
+| 4  |	Solusi yang diberikan program memenuhi (berhasil mencapai 24)        | :heavy_check_mark: |  |
+| 5  |	Program dapat menyimpan solusi dalam file teks                       | :heavy_check_mark: |  |
+
 ## Screenshot Program
 ![Program Penerapan Algoritma Brute Force Pada Permainan Kartu 24](./program.png)
 
