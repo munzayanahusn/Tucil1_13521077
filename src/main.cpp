@@ -3,10 +3,10 @@
 // NIM  : 13521077
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <fstream>
 #include <vector>
-#include <cstdio>
 #include <ctime>
 using namespace std;
 
@@ -22,10 +22,10 @@ float calResult;
 vector<string> result;
 vector<string> temp;
 vector<vector<string>> permInput;
-clock_t start;
-double duration;
 int inKartu;
 char inputPil;
+string namaFile;
+clock_t start, endTime;
 
 // Fungsi kalkulasi
 float calculate(float input1, float input2, char op)
@@ -126,15 +126,15 @@ bool isThereVector(vector<string> temp, vector<vector<string>> permInput)
 // Program Utama
 int main()
 {
-    cout << "*** SELAMAT DATANG DI PERMAINAN 24 ***\n";
-    cout << "Pilih sistem pemilihan kartu:\n    (1) Input nilai kartu sendiri\n    (2) Pilih kartu secara acak\nInput answer : ";
+    cout << "\n*** SELAMAT DATANG DI PERMAINAN KARTU 24 ***\n";
+    cout << "\nPilih sistem pemilihan kartu:\n    (1) Input nilai kartu sendiri\n    (2) Pilih kartu secara acak\nInput answer : ";
     while (!validSistem)
     {
         cin >> inKartu;
         if (inKartu == 1 or inKartu == 2)
             validSistem = true;
         else
-            cout << "\nMasukkan salah! Coba Ulangi (1/2)\nInput answer : ";
+            cout << "\nMasukkan tidak sesuai! Coba Ulangi (1/2)\nInput answer : ";
     }
 
     if (inKartu == 2)
@@ -172,10 +172,12 @@ int main()
             }
 
             if (!validInput)
-                cout << "\nMasukkan salah! Coba Ulangi! (K/Q/J/A/2-10) \nInput Kartu : ";
+                cout << "\nMasukkan tidak sesuai! Coba Ulangi (K/Q/J/A/2-10) \nInput Kartu : ";
         }
     }
 
+    // auto started = chrono::high_resolution_clock::now();
+    start = clock();
     // Permutasi Input
     for (int i = 0; i < 4; i++)
     {
@@ -261,7 +263,6 @@ int main()
             A o (B o (C o D))
         */
 
-        start = clock();
         // Kemungkinan 1
         // cout << "Kemungkinan 1 \n";
         for (int i = 0; i < 4; i++)
@@ -327,7 +328,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back(to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]));
+                        result.push_back(to_string(inpInteger[0]) + " " + op1 + " " + to_string(inpInteger[1]) + " " + op2 + " " + to_string(inpInteger[2]) + " " + op3 + " " + to_string(inpInteger[3]));
                     }
                 }
             }
@@ -365,7 +366,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]));
+                        result.push_back("( " + to_string(inpInteger[0]) + " " + op1 + " " + to_string(inpInteger[1]) + " " + ")" + " " + op2 + " " + to_string(inpInteger[2]) + " " + op3 + " " + to_string(inpInteger[3]));
                     }
                 }
             }
@@ -402,7 +403,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]));
+                        result.push_back(to_string(inpInteger[0]) + " " + op1 + " " + "(" + " " + to_string(inpInteger[1]) + " " + op2 + " " + to_string(inpInteger[2]) + " " + ")" + " " + op3 + " " + to_string(inpInteger[3]));
                     }
                 }
             }
@@ -439,7 +440,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back(to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
+                        result.push_back(to_string(inpInteger[0]) + " " + op1 + " " + to_string(inpInteger[1]) + " " + op2 + " " + "(" + " " + to_string(inpInteger[2]) + " " + op3 + " " + to_string(inpInteger[3]) + " " + ")");
                     }
                 }
             }
@@ -479,7 +480,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]));
+                        result.push_back("( " + to_string(inpInteger[0]) + " " + op1 + " " + to_string(inpInteger[1]) + " " + op2 + " " + to_string(inpInteger[2]) + " " + ")" + " " + op3 + " " + to_string(inpInteger[3]));
                     }
                 }
             }
@@ -518,7 +519,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
+                        result.push_back(to_string(inpInteger[0]) + " " + op1 + " " + "(" + " " + to_string(inpInteger[1]) + " " + op2 + " " + to_string(inpInteger[2]) + " " + op3 + " " + to_string(inpInteger[3]) + " " + ")");
                     }
                 }
             }
@@ -542,7 +543,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back("(" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + ")");
+                        result.push_back("( " + to_string(inpInteger[0]) + " " + op1 + " " + to_string(inpInteger[1]) + " " + ")" + " " + op2 + " " + "(" + " " + to_string(inpInteger[2]) + " " + op3 + " " + to_string(inpInteger[3]) + " " + ")");
                     }
                 }
             }
@@ -566,7 +567,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back("((" + to_string(inpInteger[0]) + op1 + to_string(inpInteger[1]) + ")" + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]));
+                        result.push_back("(( " + to_string(inpInteger[0]) + " " + op1 + " " + to_string(inpInteger[1]) + " " + ")" + " " + op2 + " " + to_string(inpInteger[2]) + " " + ")" + " " + op3 + " " + to_string(inpInteger[3]));
                     }
                 }
             }
@@ -589,7 +590,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back("(" + to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + "))" + op3 + to_string(inpInteger[3]));
+                        result.push_back("( " + to_string(inpInteger[0]) + " " + op1 + " " + "(" + " " + to_string(inpInteger[1]) + " " + op2 + " " + to_string(inpInteger[2]) + " " + "))" + " " + op3 + " " + to_string(inpInteger[3]));
                     }
                 }
             }
@@ -612,7 +613,7 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back(to_string(inpInteger[0]) + op1 + "((" + to_string(inpInteger[1]) + op2 + to_string(inpInteger[2]) + ")" + op3 + to_string(inpInteger[3]) + ")");
+                        result.push_back(to_string(inpInteger[0]) + " " + op1 + " " + "((" + " " + to_string(inpInteger[1]) + " " + op2 + " " + to_string(inpInteger[2]) + " " + ")" + " " + op3 + " " + to_string(inpInteger[3]) + " " + ")");
                     }
                 }
             }
@@ -635,14 +636,19 @@ int main()
                     if (calResult == 24)
                     {
                         count++;
-                        result.push_back(to_string(inpInteger[0]) + op1 + "(" + to_string(inpInteger[1]) + op2 + "(" + to_string(inpInteger[2]) + op3 + to_string(inpInteger[3]) + "))");
+                        result.push_back(to_string(inpInteger[0]) + " " + op1 + " " + "(" + " " + to_string(inpInteger[1]) + " " + op2 + " " + "(" + " " + to_string(inpInteger[2]) + " " + op3 + " " + to_string(inpInteger[3]) + " " + "))");
                     }
                 }
             }
         }
     }
-    duration = clock() - start;
+    // auto done = chrono::high_resolution_clock::now();
+    // durationSec = chrono::duration_cast<chrono::seconds>(done - started).count() / (double) CLOCKS_PER_SEC;
+    // durationMili = chrono::duration_cast<chrono::milliseconds>(done - started).count();
+    // durationMicro = chrono::duration_cast<chrono::microseconds>(done - started).count();
 
+    endTime = clock();
+    double duration = double(endTime - start) / double(CLOCKS_PER_SEC);
     // Tampilkan hasil
     if (count != 0)
     {
@@ -655,9 +661,9 @@ int main()
     }
     else
     {
-        cout << "No solution found\n";
+        cout << "Tidak ada solusi\n";
     }
-    cout << "Execution time : " << duration << " seconds.\n";
+    cout << "Execution time : " << fixed << duration << setprecision(5) << " seconds.\n";
 
     // Simpan Hasil
     validInput = false;
@@ -665,11 +671,13 @@ int main()
     while (!validInput)
     {
         cin >> inputPil;
-        if (inputPil == 'Y')
+        if (inputPil == 'Y' or inputPil == 'y')
         {
             validInput = true;
+            cout << "Masukkan nama file : ";
+            cin >> namaFile;
             ofstream file;
-            file.open("../test/result.txt");
+            file.open("../test/" + namaFile + ".txt");
             file << "Kartu : " << user[0] << " " << user[1] << " " << user[2] << " " << user[3] << "\n";
             if (count != 0)
             {
@@ -683,15 +691,15 @@ int main()
             {
                 file << "No solution found\n";
             }
-            file << "Execution time : " << duration << " seconds.\n";
+            file << "Execution time : " << fixed << duration << setprecision(5) << " seconds.\n";
             file.close();
-            cout << "Berhasil menyimpan solusi di '../test/result.txt' \n";
+            cout << "Berhasil menyimpan solusi di '../test/" + namaFile + ".txt\n";
         }
-        else if (inputPil == 'N')
+        else if (inputPil == 'N' or inputPil == 'n')
             validInput = true;
         else
         {
-            cout << "\nMasukkan salah! Coba Ulangi (Y/N)\nInput answer : ";
+            cout << "\nMasukkan tidak sesuai! Coba Ulangi (Y/N)\nInput answer : ";
         }
     }
 
@@ -731,4 +739,49 @@ int main () {
     std::cout << "Operation took "<< duration << "seconds" << std::endl;
 
     return 0;
-*/
+
+    start = clock();
+
+    fun();
+
+    // Recording the end clock tick.
+    end = clock();
+
+    // Calculating total time taken by the program.
+    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+
+    #include <chrono
+    // Only needed for the sake of this example.
+    #include <iostream>
+    #include <thread>
+
+    void long_operation()
+    {
+        // Simulating a long, heavy operation.
+
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(150ms);
+    }
+
+    int main()
+    {
+        using std::chrono::high_resolution_clock;
+        using std::chrono::duration_cast;
+        using std::chrono::duration;
+        using std::chrono::milliseconds;
+
+        auto t1 = high_resolution_clock::now();
+        long_operation();
+        auto t2 = high_resolution_clock::now();
+
+        // Getting number of milliseconds as an integer.
+        auto ms_int = duration_cast<milliseconds>(t2 - t1);
+
+        // Getting number of milliseconds as a double.
+        duration<double, std::milli> ms_double = t2 - t1;
+
+        std::cout << ms_int.count() << "ms\n";
+        std::cout << ms_double.count() << "ms\n";
+        return 0;
+    }
+    */
