@@ -1,5 +1,5 @@
 # Penerapan Algoritma Brute Force Pada Permainan Kartu 24
-TUGAS KECIL 1 <br> IF2211 STRATEGI ALGORITMA
+TUGAS KECIL 1 IF2211 STRATEGI ALGORITMA
 
 ## Daftar Isi
 * [Penjelasan Ringkas Program](#penjelasan-ringkas-program)
@@ -12,11 +12,10 @@ TUGAS KECIL 1 <br> IF2211 STRATEGI ALGORITMA
 * [Kontributor](#kontributor)
 
 ## Penjelasan Ringkas Program
-Permainan kartu 24 adalah permainan kartu aritmatika dengan tujuan mencari cara untuk mencari operasi aritmatika yang terdiri dari 4 buah angka random sehingga mendapatkan hasil akhir sejumlah 24. Permainan Kartu 24 biasa dimainkan dengan menggunakan kartu remi yang terdiri dari 52 kartu yang terbagi menjadi empat suit (sekop, hati, keriting, dan wajik) yang masing-masing terdiri dari 13 kartu (As, 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, dan King) dengan As bernilai 1, Jack 
-bernilai 11, Queen bernilai 12, King bernilai 13, sedangkan kartu bilangan memiliki nilai dari bilangan itu sendiri. Operasi dasar matematika yang dapat digunakan antara lain penjumlahan (+), pengurangan (-), perkalian (×), pembagian (/) dan tanda kurung ( () ). Pemecahan persoalan permainan kartu 24 ini dikembangkan dalam Bahasa Pemrograman C++. Program berbasis CLI (Command Line Interface).
+Permainan kartu 24 adalah permainan kartu aritmatika dengan tujuan mencari operasi aritmatika yang terdiri dari 4 buah angka random sehingga mendapatkan hasil akhir sejumlah 24. Permainan Kartu 24 biasa dimainkan dengan menggunakan kartu remi yang terdiri dari 52 kartu dalam empat suit (sekop, hati, keriting, dan wajik) yang masing-masing terdiri dari 13 kartu (As, 2, 3, 4, 5, 6, 7, 8, 9, 10, Jack, Queen, dan King) dengan As bernilai 1, Jack bernilai 11, Queen bernilai 12, King bernilai 13, sedangkan kartu bilangan memiliki nilai dari bilangan itu sendiri. Operasi dasar matematika yang dapat digunakan antara lain penjumlahan (+), pengurangan (-), perkalian (×), pembagian (/) dan tanda kurung ( () ). Pemecahan persoalan permainan kartu 24 ini dikembangkan dalam Bahasa Pemrograman C++. Program berbasis CLI (Command Line Interface).
 
 ## Setup Program
-- Pastikan komputer telah terinstall compiler C++ seperti GCC (Gnu Compiler Collection)
+- Pastikan komputer telah terinstall compiler C++ contohnya GCC (Gnu Compiler Collection)
 - Cloning Repositori dengan mengetikkan perintah berikut pada terminal <br>
    ```git clone https://github.com/munzayanahusn/Tucil1_13521077.git```
 
@@ -25,14 +24,15 @@ bernilai 11, Queen bernilai 12, King bernilai 13, sedangkan kartu bilangan memil
 1. Buka Program di Visual Studio Code <br>
 2. Jalankan program dengan klik simbol Run Code
 
-### Menjalankan Program Melalui Command Prompt
-1. Buka Command Prompt <br>
+### Menjalankan Program Melalui Command Prompt/Terminal
+1. Buka Command Prompt/Terminal <br>
 2. Arahkan direktori sesuai tempat penyimpanan file Anda <br>
-    ```cd ...\Tucil1_13521077\src\ ``` <br>
+    ```cd <sesuaikan dengan path penyimpanan Anda>\Tucil1_13521077\src\``` <br>
 3. Compile program dengan mengetikkan <br>
-    ```gcc main.cpp -o main.exe ``` <br>
+    ```g++ main.cpp -o main ``` <br>
 4. Jalankan program dengan mengetikkan <br>
-    ```main.exe ```
+    ```./main```<br>
+5. Tunggu hingga muncul splash screen yang menandakan program berhasil dijalankan
 
 ## Daftar Fitur
 1. Generate 4 random number sebagai input
@@ -59,7 +59,7 @@ bernilai 11, Queen bernilai 12, King bernilai 13, sedangkan kartu bilangan memil
 | 5  |	Program dapat menyimpan solusi dalam file teks                       | :heavy_check_mark: |  |
 
 ## Screenshot Program
-![Program Penerapan Algoritma Brute Force Pada Permainan Kartu 24](./program.png)
+[<img src="program.png" width="600"/>](program.png)
 
 ## Struktur Program
 ```bash
@@ -69,11 +69,17 @@ bernilai 11, Queen bernilai 12, King bernilai 13, sedangkan kartu bilangan memil
     ├───doc
     │   └───Laporan Tugas Kecil 1 - 13521077.pdf
     ├───src
-    │   ├───
+    │   ├───calculation.cpp
     │   └───main.cpp
     ├───test
-    │   ├───result.txt
-    │   └───result1.txt
+    │   ├───result1.txt
+    │   ├───result2.txt
+    │   ├───result3.txt
+    │   ├───result4.txt
+    │   ├───result5.txt
+    │   ├───result6.txt
+    │   ├───result7.txt
+    │   └───result8.txt
     ├───program.png
     └───README.md
 ```
