@@ -10,4 +10,4 @@ Kartu : 3 8 4 7
 ( 4 * ( 7 - 3 )) + 8
 ( 7 - 3 ) * 4 + 8
 (( 7 - 3 ) * 4 ) + 8
-Execution time : 0.000000 seconds.
+Execution time : 0.003000 seconds.

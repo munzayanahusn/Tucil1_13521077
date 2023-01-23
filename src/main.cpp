@@ -25,7 +25,7 @@ vector<string> temp;
 vector<vector<string>> permInput;
 int inKartu;
 char inputPil;
-string namaFile;
+string namaFile, inputUser;
 clock_t start, endTime;
 
 // Fungsi pengecekan apakah terdapat susunan temp sudah ada di permInput
@@ -81,26 +81,50 @@ int main()
     }
     else
     { // Pengguna memasukkan sendiri 4 kartu yang dipilih
-        cout << "\nMasukkan 4 nilai kartu ! (K/Q/J/A/2-10) \nInput Kartu : ";
+        cout << "\nMasukkan 4 nilai kartu! Input (K/Q/J/A/2-10) dipisahkan dengan spasi \nInput Kartu : ";
+
         while (!validInput)
         { // Validasi input
-            cin >> user[0] >> user[1] >> user[2] >> user[3];
+            cin.clear();
+            cin.sync();
+            getline(cin, inputUser);
             validInput = true;
-            int i = 0;
-            while (i < 4 and validInput)
+
+            count = 0;
+            for (int i = 0; i < inputUser.length(); i++)
             {
-                if (user[i] == "A" or user[i] == "2" or user[i] == "3" or user[i] == "4" or user[i] == "5" or user[i] == "6" or user[i] == "7" or user[i] == "8" or user[i] == "9" or user[i] == "10" or user[i] == "J" or user[i] == "Q" or user[i] == "K")
-                    i++;
+                if (inputUser[i] == ' ')
+                    count++;
                 else
-                    validInput = false;
+                    user[count] += inputUser[i];
+            }
+
+            if (count != 3)
+            {
+                validInput = false;
+                for (int i = 0; i < count; i++)
+                    user[i] = "";
+                count = 0;
+            }
+            else
+            {
+                int i = 0;
+                while (i < 4 and validInput)
+                {
+                    if (user[i] == "A" or user[i] == "2" or user[i] == "3" or user[i] == "4" or user[i] == "5" or user[i] == "6" or user[i] == "7" or user[i] == "8" or user[i] == "9" or user[i] == "10" or user[i] == "J" or user[i] == "Q" or user[i] == "K")
+                        i++;
+                    else
+                        validInput = false;
+                }
             }
             if (!validInput)
-                cout << "\nMasukkan tidak sesuai! Coba Ulangi (K/Q/J/A/2-10) \nInput Kartu : ";
+                cout << "\nMasukkan 4 nilai kartu! Input (K/Q/J/A/2-10) dipisahkan dengan spasi \nInput Kartu : ";
         }
     }
 
     // Memulai perhitungan waktu eksekusi
     start = clock();
+    count = 0;
     // Permutasi susunan 4 angka/kartu
     for (int i = 0; i < 4; i++)
     {
