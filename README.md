@@ -67,7 +67,7 @@ Permainan kartu 24 adalah permainan kartu aritmatika dengan tujuan mencari opera
     ├───bin
     │   └───main.exe
     ├───doc
-    │   └───Laporan Tugas Kecil 1 - 13521077.pdf
+    │   └───Tucil1_K01_13521077_Husnia Munzayana.pdf
     ├───src
     │   ├───calculation.cpp
     │   └───main.cpp
