@@ -81,7 +81,7 @@ int main()
     }
     else
     { // Pengguna memasukkan sendiri 4 kartu yang dipilih
-        cout << "\nMasukkan 4 nilai kartu! Input (K/Q/J/A/2-10) dipisahkan dengan spasi \nInput Kartu : ";
+        cout << "\nMasukkan 4 nilai kartu! Setiap input kartu (K/Q/J/A/2-10) dipisahkan sebuah spasi \nInput Kartu : ";
 
         while (!validInput)
         { // Validasi input
@@ -118,7 +118,7 @@ int main()
                 }
             }
             if (!validInput)
-                cout << "\nMasukkan 4 nilai kartu! Input (K/Q/J/A/2-10) dipisahkan dengan spasi \nInput Kartu : ";
+                cout << "\nMasukkan 4 nilai kartu! Setiap input kartu (K/Q/J/A/2-10) dipisahkan sebuah spasi \nInput Kartu : ";
         }
     }
 
